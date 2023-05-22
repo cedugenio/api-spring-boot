@@ -36,7 +36,7 @@ public class TokenService {
         try {
             var algoritmo = Algorithm.HMAC256(secret);
              return JWT.require(algoritmo)
-                    .withIssuer("erro ao gerar token jwt")
+                    .withIssuer("Erro ao gerar token jwt")
                     .build()
                      .verify(tokenJWT)
                      .getSubject();
