@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
+import java.util.Base64;
 
 @Service
 public class TokenService {
@@ -27,27 +28,26 @@ public class TokenService {
                     .withExpiresAt(dataExpiracao())
                     .sign(algoritmo);
         } catch (JWTCreationException exception){
-            throw new RuntimeException("erro ao gerar token jwt", exception);
+            throw new RuntimeException("Erro ao gerar token jwt", exception);
         }
     }
 
     public String getSubject(String tokenJWT){
-
         try {
             var algoritmo = Algorithm.HMAC256(secret);
              return JWT.require(algoritmo)
-                    .withIssuer("Erro ao gerar token jwt")
+                    .withIssuer("Api Voll.med")
                     .build()
                      .verify(tokenJWT)
                      .getSubject();
         } catch (JWTVerificationException exception){
+            exception.printStackTrace();
             throw new RuntimeException("Token JWT inválido ou expirado");
         }
 
     }
 
-
     private Instant dataExpiracao() {
-        return LocalDateTime.now().plusHours(12).toInstant(ZoneOffset.of("-03:00"));
+        return LocalDateTime.now().plusHours(2).toInstant(ZoneOffset.of("-03:00"));
     }
 }
